@@ -44,6 +44,10 @@ namespace Unity.Labs.FacialRemote
         bool m_LeftEyeNegZ;
 
         [SerializeField]
+        [Tooltip("Flips the eye direction if z is backwards.")]
+        bool m_FlipEyeZ;
+
+        [SerializeField]
         [Tooltip("Max amount of x and y movement for the eyes.")]
         Vector2 m_EyeAngleRange = new Vector2(30, 45);
 
@@ -158,6 +162,14 @@ namespace Unity.Labs.FacialRemote
                 return;
 
             UpdateBoneTransforms();
+        }
+
+        public void SetBones(Transform head, Transform neck, Transform leftEye, Transform rightEye)
+        {
+            m_HeadBone = head;
+            m_NeckBone = neck;
+            m_LeftEye = leftEye;
+            m_RightEye = rightEye;
         }
 
         public void UpdateBlendShapeIndices(IStreamSettings settings)
@@ -405,11 +417,11 @@ namespace Unity.Labs.FacialRemote
                 m_EyeLookOutRight = Mathf.Lerp(buffer[m_EyeLookOutRightIndex], m_EyeLookOutRight, m_EyeSmoothing);
                 m_EyeLookUpRight = Mathf.Lerp(buffer[m_EyeLookUpRightIndex], m_EyeLookUpRight, m_EyeSmoothing);
 
-                var leftEyePitch = Quaternion.AngleAxis((m_EyeLookUpLeft - m_EyeLookDownLeft) * m_EyeAngleRange.x, Vector3.right);
+                var leftEyePitch = Quaternion.AngleAxis((m_EyeLookUpLeft - m_EyeLookDownLeft) * m_EyeAngleRange.x, m_FlipEyeZ ? Vector3.left : Vector3.right);
                 var leftEyeYaw = Quaternion.AngleAxis((m_EyeLookInLeft - m_EyeLookOutLeft) * m_EyeAngleRange.y, Vector3.up);
                 var leftEyeRot = leftEyePitch * leftEyeYaw;
 
-                var rightEyePitch = Quaternion.AngleAxis((m_EyeLookUpRight - m_EyeLookDownRight) * m_EyeAngleRange.x, Vector3.right);
+                var rightEyePitch = Quaternion.AngleAxis((m_EyeLookUpRight - m_EyeLookDownRight) * m_EyeAngleRange.x, m_FlipEyeZ ? Vector3.left : Vector3.right);
                 var rightEyeYaw = Quaternion.AngleAxis((m_EyeLookOutRight - m_EyeLookInRight) * m_EyeAngleRange.y, Vector3.up);
                 var rightEyeRot = rightEyePitch * rightEyeYaw;
 
@@ -471,6 +483,16 @@ namespace Unity.Labs.FacialRemote
 
             if (m_DriveNeck )
                 m_NeckBone.rotation = m_ARNeckPose.rotation;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (m_EyeLeftPoseLookAt && m_EyeRightPoseLookAt)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(m_EyeLeftPoseLookAt.position, 0.005f);
+                Gizmos.DrawSphere(m_EyeRightPoseLookAt.position, 0.005f);
+            }
         }
     }
 }

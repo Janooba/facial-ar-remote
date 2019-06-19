@@ -13,6 +13,7 @@ namespace Unity.Labs.FacialRemote
         SerializedProperty m_RightEye;
         SerializedProperty m_RightEyeNegZ;
         SerializedProperty m_LeftEyeNegZ;
+        SerializedProperty m_FlipEyeZ;
         SerializedProperty m_EyeAngleRange;
         SerializedProperty m_EyeLookDistance;
         SerializedProperty m_DriveHead;
@@ -37,6 +38,7 @@ namespace Unity.Labs.FacialRemote
             m_DriveEyes = serializedObject.FindProperty("m_DriveEyes");
             m_RightEyeNegZ = serializedObject.FindProperty("m_RightEyeNegZ");
             m_LeftEyeNegZ = serializedObject.FindProperty("m_LeftEyeNegZ");
+            m_FlipEyeZ = serializedObject.FindProperty("m_FlipEyeZ");
             m_EyeAngleRange = serializedObject.FindProperty("m_EyeAngleRange");
             m_EyeSmoothing = serializedObject.FindProperty("m_EyeSmoothing");
             m_EyeLookDistance = serializedObject.FindProperty("m_EyeLookDistance");
@@ -67,6 +69,7 @@ namespace Unity.Labs.FacialRemote
                     EditorGUILayout.PropertyField(m_EyeLookDistance);
                     EditorGUILayout.PropertyField(m_RightEyeNegZ);
                     EditorGUILayout.PropertyField(m_LeftEyeNegZ);
+                    EditorGUILayout.PropertyField(m_FlipEyeZ);
                     EditorGUILayout.PropertyField(m_EyeAngleRange);
                     EditorGUILayout.PropertyField(m_EyeSmoothing);
                 }

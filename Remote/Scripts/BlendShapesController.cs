@@ -49,7 +49,7 @@ namespace Unity.Labs.FacialRemote
 
         IStreamSettings m_LastStreamSettings;
 
-        public SkinnedMeshRenderer[] skinnedMeshRenderers { get { return m_SkinnedMeshRenderers; }}
+        public SkinnedMeshRenderer[] skinnedMeshRenderers { get { return m_SkinnedMeshRenderers; } set { m_SkinnedMeshRenderers = value; } }
         public Dictionary<SkinnedMeshRenderer, BlendShapeIndexData[]> blendShapeIndices { get { return m_Indices; } }
 
         public float[] blendShapesScaled { get; private set; }

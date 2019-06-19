@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 namespace Unity.Labs.FacialRemote
 {
@@ -59,6 +60,7 @@ namespace Unity.Labs.FacialRemote
 
         [SerializeField]
         [Tooltip("Rename mapping values to apply blend shape locations to a blend shape controller.")]
+        [TableList]
         Mapping[] m_Mappings = { };
 
         public byte ErrorCheck { get { return m_ErrorCheck; } }
@@ -134,6 +136,20 @@ namespace Unity.Labs.FacialRemote
 
                 locs.Sort();
                 m_Locations = locs.ToArray();
+            }
+        }
+
+        [HorizontalGroup("ButtonFailsafe")]
+        public bool EnableFillButton = false;
+
+        [Button, EnableIf("EnableFillButton"), HorizontalGroup("ButtonFailsafe")]
+        public void FillMappingsFromLocations()
+        {
+            m_Mappings = new Mapping[m_Locations.Length];
+
+            for (int i = 0; i < m_Locations.Length; i++)
+            {
+                m_Mappings[i] = new Mapping("", m_Locations[i]);
             }
         }
     }
